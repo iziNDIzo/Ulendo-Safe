@@ -1,0 +1,36 @@
+<!doctype html>
+<html><head><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ulendo Safe Demo</title>
+<style>
+body{font-family:Arial;background:#e5ddd5;margin:0}
+.header{background:#075E54;color:#fff;padding:12px;font-weight:bold}
+#chat{padding:12px;height:60vh;overflow:auto}
+.me{background:#dcf8c6;margin:6px 0 6px auto;padding:8px;border-radius:8px;max-width:80%;width:fit-content}
+.bot{background:#fff;margin:6px auto 6px 0;padding:8px;border-radius:8px;max-width:85%;white-space:pre-wrap}
+#box{display:flex;padding:8px;background:#f0f0f0}
+input{flex:1;padding:10px} button{padding:10px;background:#075E54;color:#fff;border:none;margin:2px}
+.quick{padding:8px;background:#fff}
+</style>
+</head><body>
+<div class="header">🦺 Ulendo Safe - WhatsApp Demo (Malawi)</div>
+<div id="chat"></div>
+<div id="box"><input id="t" placeholder="Type: verify KBA-4521"/><button onclick="send()">Send</button></div>
+<div class="quick">
+<button onclick="quick('verify KBA-4521')">✅ Verify Good</button>
+<button onclick="quick('verify KBA-9999')">🚨 Verify Thug</button>
+<button onclick="quick('check C-8891 to Manja 11pm')">👤 Check Customer</button>
+<button onclick="quick('SOS ndithandizeni')">🆘 SOS</button>
+<button onclick="quick('breakdown car taxi near Area 25 tyre burst')">🛠️ Breakdown</button>
+</div>
+<script>
+async function send(txt){
+ const input=document.getElementById('t'); const text=txt||input.value; if(!text) return;
+ add(text,'me'); input.value='';
+ try{
+  const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({from:'265999111222',text})});
+  const d=await r.json(); add(d.reply,'bot');
+ }catch(e){ add('Server error - is node running?','bot'); }
+}
+function quick(t){send(t)}
+function add(t,c){const d=document.createElement('div');d.className=c;d.innerText=t;document.getElementById('chat').appendChild(d);d.scrollIntoView();}
+</script></body></html>
